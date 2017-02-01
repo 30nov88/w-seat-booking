@@ -32,6 +32,21 @@
             $scope.enStart = false;
             $scope.enSeats = false;
         };
+        
+        $scope.setData = function() {
+            // localstorage
+            if(localStorage.getItem("reservation") !== null){
+                $scope.booked = JSON.parse(localStorage.getItem("reservation"));
+            }
+            else {
+                // hard-coded value for seats already booked
+                $scope.booked = [
+                    {name: 'Prakaash', nos: 2, seats: ['E7','E8']},
+                    {name: 'Valavan', nos: 3, seats: ['J3','J4','J5']}
+                ];
+            }
+            
+        };
 
         $scope.calculateSeats = function () {
             // to calculate number of seats available
@@ -39,11 +54,7 @@
             $scope.availableSeats = tmpElemsArr.length -1;
         };
         
-        // hard-coded value for seats already booked
-        $scope.booked = [
-                {name: 'Prakaash', nos: 2, seats: ['E7','E8']},
-                {name: 'Valavan', nos: 3, seats: ['J3','J4','J5']}
-        ];
+        $scope.booked = [];
         
         angular.element(document).ready(function () {
             
@@ -60,7 +71,7 @@
         });
         
         $scope.init();
-        
+        $scope.setData();
         // used for ng repeat on seats table
         $scope.range = function(count){
             var ratings = [];
@@ -159,8 +170,11 @@
                 tmpObj['nos'] = $scope.resCount;
                 tmpObj['seats'] = $scope.selSeatNos;
                 $scope.booked.push(tmpObj);
-                showToast("Seats Booked!", "success");
                 
+                // localStorage
+                localStorage.setItem("reservation", angular.toJson($scope.booked));
+
+                showToast("Seats Booked!", "success");
                 // reset
                 $scope.init();
                 $scope.calculateSeats();
