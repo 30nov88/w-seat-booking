@@ -1,5 +1,3 @@
-# job2017.github.io
-
 <h3>UI Coding Assignment</h3>
 <div>Design a seat reservation system interface for a movie hall. </div>
 <br/>
